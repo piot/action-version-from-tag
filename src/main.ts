@@ -18,12 +18,14 @@ async function run() {
       return
     }
 
-    const prefix = tagName.substr(0, 11)
-    if (prefix != 'refs/heads/') {
-      core.setFailed(`tag name should start with 'refs/heads/' ('${tagName}')`)
+    const expectedPrefix = 'refs/tags/'
+    const prefix = tagName.substr(0, expectedPrefix.length)
+    if (prefix != expectedPrefix) {
+      core.setFailed(`tag name should start with '${expectedPrefix}' ('${tagName}')`)
+      return
     }
 
-    tagName = tagName.substr(11)
+    tagName = tagName.substr(expectedPrefix.length)
     if (tagName[0] != 'v') {
       core.setFailed('version tags should start with "v"')
       return
@@ -41,8 +43,9 @@ async function run() {
       return
     }
 
-    core.exportVariable('RELEASE_VERSION', version)
+    core.debug(`found version '${version}'`)
 
+    core.exportVariable('RELEASE_VERSION', version)
     core.setOutput('version', version)
   } catch (error) {
     core.setFailed(error.message);
