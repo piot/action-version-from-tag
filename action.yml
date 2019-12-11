@@ -1,0 +1,10 @@
+# https://help.github.com/en/articles/metadata-syntax-for-github-actions
+name: 'Version from tag'
+description: 'Get version from tag'
+author: 'piot'
+runs:
+  using: 'node12'
+  main: 'lib/main.js'
+branding:
+  color: 'green'
+  icon: 'package'
