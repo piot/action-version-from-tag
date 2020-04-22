@@ -38,7 +38,14 @@ async function run() {
       return
     }
 
-    if (!semver.valid(version)) {
+    let allowIllegalSemanticVersion = core.getInput('allow-illegal-semver')
+
+    const shouldCheckSemanticVersion = !allowIllegalSemanticVersion
+    if (!shouldCheckSemanticVersion) {
+      core.debug('skipping semantic version check')
+    }
+
+    if (shouldCheckSemanticVersion && !semver.valid(version)) {
       core.setFailed(`not a valid semver version "${version}"`)
       return
     }
